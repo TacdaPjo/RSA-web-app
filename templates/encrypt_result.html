@@ -1,12 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <title>Encryption Result</title>
-</head>
-<body>
+{% extends 'base.html' %}
+{% block content %}
     <h2>Encryption Result</h2>
     <p>Original Message: {{ message }}</p>
     <p>Encrypted Message: {{ ciphertext }}</p>
     <a href="{{ url_for('index') }}">Back</a>
-</body>
-</html>
+{% endblock %}

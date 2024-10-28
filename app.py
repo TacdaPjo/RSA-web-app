@@ -27,18 +27,18 @@ def generate_rsa_keys():
     flash("RSA keys generated successfully!", "success")
     return render_template('index.html', public_key=public_key, private_key=private_key)
 
-@app.route('/encrypt', methods=['POST'])
-def encrypt():
+@app.route('/encrypt_result', methods=['POST'])
+def encrypt_result():
     if public_key is None:
         flash("Please generate RSA keys first.", "danger")
         return redirect(url_for('index'))
 
     message = request.form['message']
     ciphertext = encrypt_message(message, public_key)
-    return render_template('encrypt.html', message=message, ciphertext=ciphertext)
+    return render_template('encrypt_result.html', message=message, ciphertext=ciphertext)
 
-@app.route('/decrypt', methods=['POST'])
-def decrypt():
+@app.route('/decrypt_result', methods=['POST'])
+def decrypt_result():
     if private_key is None:
         flash("Please generate RSA keys first.", "danger")
         return redirect(url_for('index'))
@@ -46,7 +46,19 @@ def decrypt():
     encrypted_message = request.form['encrypted_message']
     encrypted_message = list(map(int, encrypted_message.strip('[]').split(',')))
     decrypted_message = decrypt_message(encrypted_message, private_key)
-    return render_template('decrypt.html', encrypted_message=encrypted_message, decrypted_message=decrypted_message)
+    return render_template('decrypt_result.html', encrypted_message=encrypted_message, decrypted_message=decrypted_message)
+
+@app.route('/encryption')
+def encryption():
+    return render_template('encryption.html', public_key=public_key, private_key=private_key)
+
+@app.route('/decryption')
+def decryption():
+    return render_template('decryption.html', public_key=public_key, private_key=private_key)
+
+@app.route('/about_me')
+def about_me():
+    return render_template('about_me.html', public_key=public_key, private_key=private_key)
 
 if __name__ == '__main__':
     app.run(debug=True)

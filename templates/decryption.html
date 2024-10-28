@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>Generate RSA Keys</h2>
+<form action="{{ url_for('generate_rsa_keys') }}" method="post">
+    <label>Prime p:</label>
+    <input type="number" name="p" required>
+    <label>Prime q:</label>
+    <input type="number" name="q" required>
+    <button type="submit">Generate Keys</button>
+</form>
+
+{% if public_key and private_key %}
+<h3>Public Key: {{ public_key }}</h3>
+<h3>Private Key: {{ private_key }}</h3>
+{% endif %}
+
+<h2>Decrypt a Message</h2>
+<form action="{{ url_for('decrypt_result') }}" method="post">
+    <label>Message:</label>
+    <input type="text" name="decrypted_message" required>
+    <button type="submit">Decrypt</button>
+</form>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <p>{{ message }}</p>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+{% endblock %}
