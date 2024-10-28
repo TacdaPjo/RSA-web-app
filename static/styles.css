@@ -1,6 +1,10 @@
 /* Body styling with a vintage, monochromatic feel */
+
+
 body {
-    font-family: 'Arial', sans-serif;
+    font-family: 'Arial', san-serif;
+    font-weight: 300;
+    font-style: normal;
     background-color: #111;
     color: #fff;
     margin: 0;
