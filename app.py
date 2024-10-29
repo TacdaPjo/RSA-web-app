@@ -1,5 +1,7 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from rsa_functions import generate_keys, encrypt_message, decrypt_message, check_prime_number
+import sqlite3
+from datetime import datetime
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed for flash messages
@@ -59,6 +61,49 @@ def decryption():
 @app.route('/about_me')
 def about_me():
     return render_template('about_me.html', public_key=public_key, private_key=private_key)
+
+def log_activity(page_visited, time_spent, browser_info):
+    try:
+        conn = sqlite3.connect('user_activity.db')
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO activity_log (page_visited, time_spent, browser_info, timestamp)
+            VALUES (?, ?, ?, ?)
+        ''', (page_visited, time_spent, browser_info, datetime.now()))
+        conn.commit()
+    except sqlite3.Error as e:
+        print("Error inserting into database:", e)  # Error logging
+    finally:
+        conn.close()
+
+# Route for the homepage
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+# Route to log user activity
+@app.route('/log_activity', methods=['POST'])
+def log_user_activity():
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'status': 'failed', 'message': 'No data received'}), 400
+        
+        # Extract data
+        page_visited = data.get('page')
+        time_spent = data.get('time_spent')
+        browser_info = request.user_agent.string  # Gets browser details
+
+        # Validate data
+        if page_visited is None or time_spent is None:
+            return jsonify({'status': 'failed', 'message': 'Missing data fields'}), 400
+
+        # Log activity to the database
+        log_activity(page_visited, time_spent, browser_info)
+        return jsonify({'status': 'success'})
+    except Exception as e:
+        print("Error logging activity:", e)  # Error logging
+        return jsonify({'status': 'failed', 'message': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)

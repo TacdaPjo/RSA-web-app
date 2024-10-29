@@ -1,6 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Track User Activity</title>
+  <script>
+      let startTime = Date.now();
 
+      window.addEventListener("beforeunload", function() {
+          let timeSpent = Math.round((Date.now() - startTime) / 1000);  // Time spent in seconds
+          let page = window.location.pathname;
+          
+          fetch("/log_activity", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ page: page, time_spent: timeSpent })
+          });
+      });
+  </script>
+</head>
+<body>
 <h1>Hi and welcome</h1>
 
 
