@@ -25,7 +25,7 @@ def generate_rsa_keys():
 
     public_key, private_key = generate_keys(p, q)
     flash("RSA keys generated successfully!", "success")
-    return render_template('index.html', public_key=public_key, private_key=private_key)
+    return render_template('encryption.html', public_key=public_key, private_key=private_key)
 
 @app.route('/encrypt_result', methods=['POST'])
 def encrypt_result():

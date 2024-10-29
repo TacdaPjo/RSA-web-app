@@ -3,21 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}My Flask App{% endblock %}</title>
+    <title>Split Screen Example</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('encryption') }}">Encryption</a>
-        <a href="{{ url_for('decryption') }}">Decryption</a>
-        <a href="{{ url_for('about_me') }}">About me</a>
-    </nav>
-
-    <div class="content">
-        {% block content %}
-        <!-- Page-specific content will go here -->
-        {% endblock %}
+    <div id="declinePopup" class="modal">
+        <div class="modal-content">
+            <h2>Setup for cookies</h2>
+            <p>RSA Encryption and our partners store information on your device to provide customized functionality, collect visitor statistics, and enable personalized marketing. You choose which types of cookies you accept in addition to the necessary ones required for the website to function.</p>
+            <button class="accept-button" onclick="acceptAll()">Accept All</button>
+            <button class="decline-button" onclick="declineAll()">Decline All</button>
+        </div>
     </div>
+
+
+    <div class="menu">
+        <span class="menu-button">Menu</span>
+        <div class="dropdown">
+            <a href="{{ url_for('index') }}">Home</a>
+            <a href="{{ url_for('encryption') }}">RSA Encryption</a>
+            <a href="{{ url_for('decryption') }}">RSA Decryption</a>
+            <a href="{{ url_for('about_me') }}">About Me</a>
+        </div> 
+    </div>
+
+    <div class="left-section"></div>
+    <div class="right-section"></div>
+    <div class="centered-text-container">Welcome to RSA Encryption</div>
+    <div class="centered-subtext">Secure your messages with powerful encryption.</div>
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='images/parcels.png') }}" alt="RSA encryption illustration">
+    </div>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
 </body>
 </html>
+<!-- <nav>
+    <a href="{{ url_for('index') }}">Home</a>
+    <a href="{{ url_for('encryption') }}">RSA Encryption</a>
+    <a href="{{ url_for('decryption') }}">RSA Decryption</a>
+    <a href="{{ url_for('about_me') }}">About Me</a>
+</nav> -->
