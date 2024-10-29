@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash, jso
 from rsa_functions import generate_keys, encrypt_message, decrypt_message, check_prime_number
 import sqlite3
 from datetime import datetime
+import time
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey'  # Needed for flash messages
@@ -12,6 +13,7 @@ private_key = None
 
 @app.route('/')
 def index():
+    log_activity(request.path, 0, request.user_agent.string)
     return render_template('index.html')
 
 @app.route('/generate_keys', methods=['POST'])
@@ -52,29 +54,41 @@ def decrypt_result():
 
 @app.route('/encryption')
 def encryption():
+    log_activity(request.path, 0, request.user_agent.string)
     return render_template('encryption.html', public_key=public_key, private_key=private_key)
 
 @app.route('/decryption')
 def decryption():
+    log_activity(request.path, 0, request.user_agent.string)
     return render_template('decryption.html', public_key=public_key, private_key=private_key)
 
 @app.route('/about_me')
 def about_me():
+    log_activity(request.path, 0, request.user_agent.string)
     return render_template('about_me.html', public_key=public_key, private_key=private_key)
 
 def log_activity(page_visited, time_spent, browser_info):
-    try:
-        conn = sqlite3.connect('user_activity.db')
-        c = conn.cursor()
-        c.execute('''
-            INSERT INTO activity_log (page_visited, time_spent, browser_info, timestamp)
-            VALUES (?, ?, ?, ?)
-        ''', (page_visited, time_spent, browser_info, datetime.now()))
-        conn.commit()
-    except sqlite3.Error as e:
-        print("Error inserting into database:", e)  # Error logging
-    finally:
-        conn.close()
+    max_retries = 5  # Number of retries for database access
+    retry_delay = 0.1  # Delay between retries (in seconds)
+
+    for attempt in range(max_retries):
+        try:
+            # Use `with` statement to ensure the connection is properly closed
+            with sqlite3.connect('user_activity.db', check_same_thread=False) as conn:
+                c = conn.cursor()
+                c.execute('''
+                    INSERT INTO activity_log (page_visited, time_spent, browser_info, timestamp)
+                    VALUES (?, ?, ?, ?)
+                ''', (page_visited, time_spent, browser_info, datetime.now()))
+                conn.commit()
+            break  # Exit loop if insertion is successful
+        except sqlite3.OperationalError as e:
+            if "database is locked" in str(e):
+                print(f"Database is locked. Retry attempt {attempt + 1}...")
+                time.sleep(retry_delay)  # Wait before retrying
+            else:
+                print("Error inserting into database:", e)
+                break  # Exit loop if it's a different database error
 
 # Route for the homepage
 @app.route('/')
