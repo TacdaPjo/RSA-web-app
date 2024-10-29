@@ -24,6 +24,14 @@
 </head>
 <body>
 <h1>Hi and welcome</h1>
+<div class="left-section"></div>
+<div class="right-section"></div>
+<div class="centered-text-container">Welcome to RSA Encryption</div>
+<div class="centered-subtext">Secure your messages with powerful encryption.</div>
+<div class="image-container">
+    <img src="{{ url_for('static', filename='images/parcels.png') }}" alt="RSA encryption illustration">
+</div>
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 
 {% endblock %}
