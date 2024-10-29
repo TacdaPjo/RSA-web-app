@@ -172,6 +172,7 @@ body {
     position: relative;
     max-width: 50%;
     max-height: 60%;
+    /*height: 400px; /* Set a specific height */
     margin-top: 160px;
     overflow: hidden;
     border-radius: 10px;
@@ -179,9 +180,17 @@ body {
 }
 
 
+.image {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
 .image.show {
-    display: block;
+    display: block; /* Show only the active image */
     opacity: 1;
+    transition: opacity 1s ease-in-out;
 }
 
 .image.fade {
