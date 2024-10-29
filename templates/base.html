@@ -1,21 +1,13 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Split Screen Example</title>
+    <title>{% block title %}My App{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 <body>
-    <div id="declinePopup" class="modal">
-        <div class="modal-content">
-            <h2>Setup for cookies</h2>
-            <p>RSA Encryption and our partners store information on your device to provide customized functionality, collect visitor statistics, and enable personalized marketing. You choose which types of cookies you accept in addition to the necessary ones required for the website to function.</p>
-            <button class="accept-button" onclick="acceptAll()">Accept All</button>
-            <button class="decline-button" onclick="declineAll()">Decline All</button>
-        </div>
-    </div>
-
+    <div class="centered-text-container">Welcome to RSA Encryption</div>
 
     <div class="menu">
         <span class="menu-button">Menu</span>
@@ -26,15 +18,10 @@
             <a href="{{ url_for('about_me') }}">About Me</a>
         </div> 
     </div>
-    {% block content %}
+    <!-- Main content block for child templates -->
+    {% block content %}{% endblock %}
 
-    {% endblock %}
-
+    <!-- Optional script block for child templates to add JavaScript -->
+    {% block scripts %}{% endblock %}
 </body>
 </html>
-<!-- <nav>
-    <a href="{{ url_for('index') }}">Home</a>
-    <a href="{{ url_for('encryption') }}">RSA Encryption</a>
-    <a href="{{ url_for('decryption') }}">RSA Decryption</a>
-    <a href="{{ url_for('about_me') }}">About Me</a>
-</nav> -->

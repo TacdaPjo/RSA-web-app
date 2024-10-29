@@ -1,36 +1,49 @@
 {% extends 'base.html' %}
+
+{% block title %}Split Screen Example{% endblock %}
+
 {% block content %}
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Track User Activity</title>
-  <script>
-      let startTime = Date.now();
-
-      window.addEventListener("beforeunload", function() {
-          let timeSpent = Math.round((Date.now() - startTime) / 1000);  // Time spent in seconds
-          let page = window.location.pathname;
-          
-          fetch("/log_activity", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ page: page, time_spent: timeSpent })
-          });
-      });
-  </script>
-</head>
-<body>
-<div class="left-section"></div>
-<div class="right-section"></div>
-<div class="centered-text-container">Welcome to RSA Encryption</div>
-<div class="centered-subtext">Secure your messages with powerful encryption.</div>
-<div class="image-container">
-    <img src="{{ url_for('static', filename='images/parcels.png') }}" alt="RSA encryption illustration">
+<div class="slideshow-container">
+    <div class="image fade show">
+        <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Image 1">
+    </div>
+    <div class="image fade">
+        <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Image 2">
+    </div>
+    <div class="image fade">
+        <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="Image 3">
+    </div>
+    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="next" onclick="changeSlide(1)">&#10095;</button>
 </div>
+
+
+<div id="popupModal" class="modal">
+    <div class="modal-content">
+        <h2>Setup for cookies</h2>
+        <p>RSA Encryption and our partners store information on your device to provide customized functionality, collect visitor statistics, and enable personalized marketing. You choose which types of cookies you accept in addition to the necessary ones required for the website to function.</p>
+        <button class="accept-button" onclick="acceptAll()">Accept All</button>
+        <button class="decline-button" onclick="declineAll()">Decline All</button>
+    </div>
+</div>
+
+
+<div class="centered-subtext">Secure your messages with powerful encryption.</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+    let startTime = Date.now();
+    window.addEventListener("beforeunload", function() {
+        let timeSpent = Math.round((Date.now() - startTime) / 1000);
+        let page = window.location.pathname;
+        fetch("/log_activity", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ page: page, time_spent: timeSpent })
+        });
+    });
+</script>
 <script src="{{ url_for('static', filename='scripts.js') }}"></script>
-
-
 {% endblock %}

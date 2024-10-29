@@ -14,7 +14,10 @@ body {
     background: linear-gradient(to right, #1c1c1c 50%, #d1bb91 50%);
     overflow: hidden;
     position: relative;
+    flex-direction: column;
 }
+
+
 
 .centered-text-container {
     position: absolute;
@@ -127,7 +130,7 @@ body {
 }
 
 .modal-content h2 {
-    margin-bottom: 15px; /* Space between the header and the text */
+    margin-bottom: 15px;
 }
 
 /* Not used! */
@@ -154,13 +157,67 @@ body {
 }
 
 .accept-button {
-    right: 40px; /* Bottom-right corner */
+    right: 40px;
 }
 
 .decline-button {
-    left: 40px; /* Bottom-left corner */
+    left: 40px;
 }
 
 .modal-content button:hover {
     background-color: #b8a17c;
 }
+
+.slideshow-container {
+    position: relative;
+    max-width: 50%;
+    max-height: 60%;
+    margin-top: 160px;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(255, 254, 254, 0.3);
+}
+
+
+.image.show {
+    display: block;
+    opacity: 1;
+}
+
+.image.fade {
+    transition: opacity 1s ease-in-out;
+}
+
+.image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 50px;
+    background-color: rgba(255, 255, 255, 0.8);
+    color: black;
+    border: none;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
