@@ -1,4 +1,3 @@
-import requests
 from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from rsa_functions import generate_keys, encrypt_message, decrypt_message, check_prime_number
 import sqlite3
