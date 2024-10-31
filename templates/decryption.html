@@ -1,23 +1,55 @@
 {% extends 'base.html' %}
 {% block content %}
+<div class="centered-text-container">Find your inspiration</div>
 
-{% if public_key and private_key %}
-<h3>Public Key: {{ public_key }}</h3>
-<h3>Private Key: {{ private_key }}</h3>
-{% endif %}
+<div class="content-container">
+  <div id="leaderboard">
+      <h3>Fishing Leaderboard</h3>
+      <div class="leaderboard-header">
+        <span>Name</span>
+        <span>Length</span>
+        <span>Species</span>
+        <span>Image</span>
+    </div>
+      <ul id="leaderboard-list">
+          <!-- Leaderboard items go here -->
+      </ul>
+  </div>
+  <div id="upload-section">
+      <h3>Upload Your Catch</h3>
+      <form id="uploadForm" enctype="multipart/form-data">
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="name">My Name:</label>
+                  <input type="text" id="name" name="name" required placeholder="Enter your name">
+              </div>
+              <div class="form-group">
+                  <label for="length">Length in cm:</label>
+                  <input type="text" id="length" name="length" required placeholder="Enter your length">
+              </div>
+          </div>
+          <div class="form-row">
+              <div class="form-group">
+                  <label for="species">Species of Fish:</label>
+                  <input type="text" id="species" name="species" required placeholder="Enter species of fish">
+              </div>
+              <div class="form-group">
+                  <label for="photo">Choose a photo to upload:</label>
+                  <input type="file" id="photo" name="photo" accept="image/*" required>
+              </div>
+          </div>
+          <button type="submit" class="upload-button">Upload Photo</button>
+      </form>
+  </div>
+</div>
 
-<h2>Decrypt a Message</h2>
-<form action="{{ url_for('decrypt_result') }}" method="POST">
-  <label for="encrypted_message">Enter Encrypted Message:</label>
-  <input type="text" id="encrypted_message" name="encrypted_message" required>
-  <button type="submit">Decrypt</button>
-</form>
+<div id="imageModal" class="modal" onclick="closeModal(event)">
+  <div class="modal-image-container">
+      <span class="close-button" onclick="closeModal()">&times;</span>
+      <img class="modal-content" id="enlargedImage">
+  </div>
+</div>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <p>{{ message }}</p>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
+
 {% endblock %}

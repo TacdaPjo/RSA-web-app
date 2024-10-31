@@ -5,16 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}My App{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap" rel="stylesheet">
+    <link rel="icon" href="{{ url_for('static', filename='images/fish.png') }}" type="image/png">
+
+
 </head>
 <body>
-    <div class="centered-text-container">Welcome to RSA Encryption</div>
-
     <div class="menu">
         <span class="menu-button">Menu</span>
         <div class="dropdown">
             <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('encryption') }}">RSA Encryption</a>
-            <a href="{{ url_for('decryption') }}">RSA Decryption</a>
+            <a href="{{ url_for('encryption') }}">Images</a>
+            <a href="{{ url_for('decryption') }}">Leaderboard</a>
             <a href="{{ url_for('about_me') }}">About Me</a>
         </div> 
     </div>

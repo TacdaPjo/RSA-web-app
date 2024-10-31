@@ -1,25 +1,34 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Generate RSA Keys</h2>
-<form action="{{ url_for('generate_rsa_keys') }}" method="post">
-    <label>Prime p:</label>
-    <input type="number" name="p" required>
-    <label>Prime q:</label>
-    <input type="number" name="q" required>
-    <button type="submit">Generate Keys</button>
-</form>
 
-{% if public_key and private_key %}
-<h3>Public Key: {{ public_key }}</h3>
-<h3>Private Key: {{ private_key }}</h3>
-{% endif %}
+<div class="centered-text-container">Find your inspiration</div>
 
-<h2>Encrypt a Message</h2>
-<form action="{{ url_for('encrypt_result') }}" method="post">
-    <label>Message:</label>
-    <input type="text" name="message" required>
-    <button type="submit">Encrypt</button>
-</form>
+<div class="slider-background">
+  <div class="slider-container">
+      <div class="slider">
+          <div class="slide"><img src="https://plus.unsplash.com/premium_photo-1661963190238-39dde65f836f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 1"></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1520446981423-6a8377ed1eea?q=80&w=2118&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 2"></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1592937238227-bd9a607670b6?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 3"></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1462927346281-d1727e290082?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 4"></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1506873589908-63bc22175dd7?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 5"></div>
+          <div class="slide"><img src="https://images.unsplash.com/photo-1478527687007-bfbac0626a7f?q=80&w=2076&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Image 6"></div>
+          <div class="slide"><img src="https://images.pexels.com/photos/6830973/pexels-photo-6830973.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="Image 7"></div>
+      </div>
+      <button class="prev">&#10094;</button>
+      <button class="next">&#10095;</button>
+  </div>
+  <div class="dots-container">
+      <span class="dot" data-index="0"></span>
+      <span class="dot" data-index="1"></span>
+      <span class="dot" data-index="2"></span>
+      <span class="dot" data-index="3"></span>
+      <span class="dot" data-index="4"></span>
+      <span class="dot" data-index="5"></span>
+      <span class="dot" data-index="6"></span>
+  </div>
+</div>
+
+<script src="{{ url_for('static', filename='scripts.js') }}"></script>
 
 
 {% with messages = get_flashed_messages(with_categories=true) %}

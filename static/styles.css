@@ -1,12 +1,12 @@
 /* Reset */
 * {
-    font-family: "Electrolize", sans-serif;
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 body {
+    font-family: 'Poppins', sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -36,6 +36,21 @@ body {
 .centered-subtext {
     position: absolute;
     top:150px;
+    padding-top: 10px; 
+    font-size: 4em;
+    font-weight: bold;
+    color: #ffffff;
+    background: #ffffff;
+    /*background: linear-gradient(to right, #d1bb91 50%, #1c1c1c 50%);*/
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-align: center;
+}
+
+.centered-subtext2 {
+    position: absolute;
+    top:250px;
     padding-top: 10px; 
     font-size: 1em;
     font-weight: bold;
@@ -111,38 +126,36 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.8); 
     justify-content: center;
     align-items: center;
     z-index: 1000;
 }
 
+.modal-image-container {
+    position: relative;
+    max-width: 90%;
+    max-height: 90%;
+}
+
 .modal-content {
-    background-color: #1c1c1c;
-    color: #ffffff;
-    padding: 20px;
+    max-width: 100%;
+    max-height: 100%;
     border-radius: 8px;
-    width: 60%; 
-    max-width: 400px;
-    height: 300px; 
-    text-align: center;
-    position: relative; 
+    object-fit: contain;
 }
 
-.modal-content h2 {
-    margin-bottom: 15px;
-}
 
-/* Not used! */
+/*
 .close-button {
-    color: #ffffff;
+    color: #000000;
     position: absolute;
     top: 10px;
     right: 10px;
-    font-size: 1.5em;
+    font-size: 3.5em;
     cursor: pointer;
 }
-
+*/
 .modal-content .accept-button,
 .modal-content .decline-button {
     background-color: #d1bb91;
@@ -168,11 +181,305 @@ body {
     background-color: #b8a17c;
 }
 
+.slider-background{
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.slider-title {
+    font-size: 4rem;
+    margin-bottom: 20px; 
+    font-weight: 600; 
+}
+
+.slider-container {
+    position: relative; 
+    width: 100%; 
+    max-width: 800px; 
+    overflow: hidden; 
+    border-radius: 10px; 
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1); 
+}
+
+.slider {
+    display: flex; 
+    transition: transform 0.4s ease-in-out; 
+}
+
+.slide {
+    min-width: 100%;          /* Ensures it takes up at least 80% of the parent container */
+    max-width: 80%;         /* Prevents it from exceeding the full width of its container */
+    height: auto;            /* Maintains aspect ratio automatically */
+    aspect-ratio: 4 / 3;      /* Maintains a 4:3 aspect ratio */
+    max-height: 90vh;        /* Optional: Sets maximum height as 90% of the viewport height */
+    object-fit: cover;       /* Useful if it's an image or video to ensure it fits within the set dimensions */
+    transition: transform 0.5s ease-in-out; 
+}
+
+.slide img {
+    width: 100%; 
+    height: 100%; 
+    object-fit: cover; 
+    border-radius: 10px; 
+}
+
+.prev, .next {
+    position: absolute; 
+    top: 50%; 
+    transform: translateY(-50%); 
+    background-color: rgba(0, 0, 0, 0.5); 
+    color: white;
+    border: none; 
+    width: 40px; 
+    height: 40px; 
+    cursor: pointer; 
+    z-index: 10; 
+    border-radius: 50%; 
+    transition: background-color 0.3s ease;
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    padding: 0; 
+}
+
+.prev {
+    left: 10px; 
+}
+
+.next {
+    right: 10px; 
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8); 
+}
+
+.dots-container {
+    margin-top: 20px; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+}
+
+.dot {
+    height: 15px; 
+    width: 15px; 
+    margin: 0 5px; 
+    background-color: rgba(255, 255, 255, 0.5); 
+    border-radius: 50%; 
+    display: inline-block; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.dot.active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+
+/* Hero section styles */
+.hero {
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+}
+
+/* Video styles */
+.hero-video {
+    position: absolute;
+    height: 10%;               /* Set the height as needed, e.g., 100% of the container */
+    width: 10%;   /* Calculate width based on the 4:3 ratio */
+    max-height: 55%;          /* Optional max height */
+    max-width: 75%;
+    top: 70%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    border-color: #1c1c1c;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    z-index: -1;
+    opacity: 0;
+    animation: fadeIn 2s ease-in-out forwards;
+}
+
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Hero content styling */
+.hero-content {
+    position: relative;
+    top: -15%;
+    z-index: 1;
+}
+
+.hero-content h1 {
+    font-size: 3em;
+    margin: 0;
+}
+
+.hero-content p {
+    font-size: 1.5em;
+    margin-top: 10px;
+}
+
+.cta-button {
+    margin-top: 20px;
+    padding: 40px 80px;
+    font-size: 2em;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    border-radius: 5px;
+    border: 1px solid white;
+    transition: background-color 0.3s ease;
+}
+
+.cta-button:hover {
+    background-color: #ff6347;
+}
+
+
+#main-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start; /* Align items at the top */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px; /* Space between sections */
+}
+
+#leaderboard {
+    flex: 1;
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+.leaderboard-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #e0e0e0;
+    font-weight: bold;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+#upload-section {
+    flex: 1;
+    width: 100%;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+#leaderboard-list {
+    list-style-type: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.leaderboard-item p {
+    margin: 0 10px;
+    font-size: 1em;
+    color: #333;
+}
+
+.leaderboard-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-size: 1em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+    font-size: 1em;
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+.upload-button {
+    font-size: 1.2em;
+    padding: 10px 20px;
+    background-color: #ff7f50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.upload-button:hover {
+    background-color: #ff6347;
+}
+
+
+/*
 .slideshow-container {
     position: relative;
     max-width: 50%;
     max-height: 60%;
-    /*height: 400px; /* Set a specific height */
+    height: 400px; 
     margin-top: 160px;
     overflow: hidden;
     border-radius: 10px;
@@ -188,7 +495,7 @@ body {
 }
 
 .image.show {
-    display: block; /* Show only the active image */
+    display: block; 
     opacity: 1;
     transition: opacity 1s ease-in-out;
 }
@@ -230,3 +537,4 @@ body {
 
 .prev { left: 10px; }
 .next { right: 10px; }
+*/

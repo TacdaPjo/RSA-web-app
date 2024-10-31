@@ -4,9 +4,22 @@ from rsa_functions import generate_keys, encrypt_message, decrypt_message, check
 import sqlite3
 from datetime import datetime
 import time
+import os
+
+
 
 app = Flask(__name__)
 app.secret_key = 'supersecretkey' 
+
+
+UPLOAD_FOLDER = 'static/uploads'
+
+# Ensure that the directory exists
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 IPINFO_API_KEY = "8b6ee932dcdc9c"
 
@@ -53,108 +66,108 @@ def decrypt_result():
 #Routes goes here!
 @app.route('/')
 def index():
-    client_ip = get_client_ip()
-    country = get_country(client_ip)
-    log_activity(request.path, 0, request.user_agent.string, request.remote_addr, country)
     return render_template('index.html')
 
 
 @app.route('/encryption')
 def encryption():
-    client_ip = get_client_ip()
-    country = get_country(client_ip)
-    log_activity(request.path, 0, request.user_agent.string, request.remote_addr, country)
     return render_template('encryption.html', public_key=public_key, private_key=private_key)
 
 @app.route('/decryption')
 def decryption():
-    client_ip = get_client_ip()
-    country = get_country(client_ip)
-    log_activity(request.path, 0, request.user_agent.string, request.remote_addr, country)
     return render_template('decryption.html', public_key=public_key, private_key=private_key)
 
 @app.route('/about_me')
 def about_me():
-    client_ip = get_client_ip()
-    country = get_country(client_ip)
-    log_activity(request.path, 0, request.user_agent.string, request.remote_addr, country)
     return render_template('about_me.html', public_key=public_key, private_key=private_key)
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
+def convert_image_to_binary(file_path):
+    with open(file_path, 'rb') as file:
+        binary_data = file.read()
+    return binary_data
 
-#Database stuffs goes here
-def get_client_ip():
-    forwarded_for = request.headers.get('X-Forwarded-For')
-    if forwarded_for:
-        return forwarded_for.split(',')[0].strip()
-    return request.remote_addr
+def retrieve_images():
+    conn = sqlite3.connect('images.db')
+    c = conn.cursor()
 
+    c.execute("SELECT name, species, photo FROM leaderboard")
+    records = c.fetchall()
 
-
-def get_country(ip_address):
-    private_ip_prefixes = ("192.168.", "10.", "172.", "127.")
-
-    if ip_address.startswith(private_ip_prefixes):
-        print("Detected local IP. Returning 'Local Network'.")
-        return "Local Network"  
-
-    try:
-        response = requests.get(f"https://ipinfo.io/{ip_address}/json?token={IPINFO_API_KEY}")
-        data = response.json()
-        print("API Response:", data)
-        return data.get("country", "Unknown")
-    
-    except requests.RequestException as e:
-        print(f"Error fetching country: {e}")
-        return "Unknown"
-
-def log_activity(page_visited, time_spent, browser_info, ip_address, country):
-    max_retries = 5
-    retry_delay = 0.1
-
-    for attempt in range(max_retries):
-        try:
-            with sqlite3.connect('user_activity.db', check_same_thread=False) as conn:
-                c = conn.cursor()
-                c.execute('''
-                    INSERT INTO activity_log (page_visited, time_spent, browser_info, timestamp, ip_address, country)
-                    VALUES (?, ?, ?, ?, ?, ?)
-                ''', (page_visited, time_spent, browser_info, datetime.now(), ip_address, country))
-                conn.commit()
-            break
-        except sqlite3.OperationalError as e:
-            if "database is locked" in str(e):
-                print(f"Database is locked. Retry attempt {attempt + 1}...")
-                time.sleep(retry_delay)
-            else:
-                print("Error inserting into database:", e)
-                break
-
-
-@app.route('/log_activity', methods=['POST'])
-def log_user_activity():
-    try:
-        data = request.get_json()
-        if not data:
-            return jsonify({'status': 'failed', 'message': 'No data received'}), 400
+    for record in records:
+        name, species, photo_binary = record
         
-        page_visited = data.get('page')
-        time_spent = data.get('time_spent')
-        browser_info = request.user_agent.string  
-        ip_address = request.remote_addr 
-        country = get_country(ip_address)
+        # Write the binary data back to an image file
+        with open(f"{name}_{species}.jpg", 'wb') as file:
+            file.write(photo_binary)
 
-        if page_visited is None or time_spent is None:
-            return jsonify({'status': 'failed', 'message': 'Missing data fields'}), 400
+    conn.close()
 
-        log_activity(page_visited, time_spent, browser_info, ip_address, country)
-        return jsonify({'status': 'success'})
-    except Exception as e:
-        print("Error logging activity:", e) 
-        return jsonify({'status': 'failed', 'message': str(e)}), 500
 
+def save_to_storage(file):
+    filename = file.filename
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    file.save(file_path)
+    return url_for('static', filename=f'uploads/{filename}', _external=True)
+
+@app.route('/upload_photo', methods=['POST'])
+def upload_photo():
+    if 'photo' not in request.files or 'name' not in request.form or 'species' not in request.form or 'length' not in request.form:
+        return jsonify({'error': 'Missing fields'}), 400
+
+    name = request.form['name']
+    length = request.form['length']
+    species = request.form['species']
+    file = request.files['photo']
+    
+    if file.filename == '':
+        return jsonify({'error': 'No file selected for uploading'}), 400
+
+    if file:
+        # Save the file to storage and get the URL
+        photo_url = save_to_storage(file)
+
+        # Insert the data into the database
+        conn = sqlite3.connect('images.db')
+        c = conn.cursor()
+        c.execute('''
+            INSERT INTO leaderboard (name, length, species, photo_url)
+            VALUES (?, ?, ?, ?)
+        ''', (name, length, species, photo_url))
+        conn.commit()
+        conn.close()
+
+        return jsonify({'photo_url': photo_url, 'message': 'Uploaded successfully'})
+    else:
+        return jsonify({'error': 'Allowed file types are jpg, jpeg, png, gif'}), 400
+
+
+@app.route('/leaderboard', methods=['GET'])
+def get_leaderboard():
+    conn = sqlite3.connect('images.db')
+    c = conn.cursor()
+    c.execute('''
+        SELECT name, length, species, photo_url
+        FROM leaderboard
+        ORDER BY length ASC
+        LIMIT 5
+    ''')
+    records = c.fetchall()
+    conn.close()
+
+    # Convert records to a list of dictionaries
+    leaderboard_entries = [
+        {
+            'name': record[0],
+            'length': record[1],
+            'species': record[2],
+            'photo_url': record[3]
+        } for record in records
+    ]
+
+    return jsonify(leaderboard_entries)
 if __name__ == '__main__':
     app.run(debug=True)

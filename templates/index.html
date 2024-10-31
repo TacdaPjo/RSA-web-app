@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-{% block title %}RSA Encryption | The cryptation of the world changes{% endblock %}
+{% block title %}Find your inspiration | Catch Your Next Adventure{% endblock %}
 
 {% block content %}
+<!--
 <div class="slideshow-container">
     <div class="image fade show">
         <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Image 1">
@@ -13,9 +14,22 @@
     <div class="image fade">
         <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="Image 3">
     </div>
-    <button class="prev" onclick="changeSlide(-1)">&#10094;</button>
+    <button class="prev">&#10094;</button>
+    <button class="next">&#10095;</button>
+
+    <button class="prev" onclick=changeSlide(-1)>&#10094;</button>cd
     <button class="next" onclick="changeSlide(1)">&#10095;</button>
-</div>
+</div>-->
+<div class="centered-text-container">Find your inspiration</div>
+<div class="centered-subtext">Catch Your Next Adventure</div>
+<div class="centered-subtext2">Explore the best fishing spots and gear</div>
+    <video autoplay loop muted playsinline class="hero-video">
+        <source src="{{ url_for('static', filename='images/video.mp4') }}" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <div class="hero-content">
+        <a href="#get-started" class="cta-button">Get Started</a>
+    </div>
 
 
 <div id="popupModal" class="modal">
@@ -28,7 +42,6 @@
 </div>
 
 
-<div class="centered-subtext">Secure your messages with powerful encryption.</div>
 
 {% endblock %}
 
