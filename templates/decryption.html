@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-<div class="centered-text-container">Find your inspiration</div>
+<title>{% block title %}Find your inspiration | Fishing Leaderboard{% endblock %}</title>
+
+<div class="centered-text-container">Fishing Leaderboard</div>
 
 <div class="content-container">
   <div id="leaderboard">
-      <h3>Fishing Leaderboard</h3>
       <div class="leaderboard-header">
         <span>Name</span>
         <span>Length</span>
         <span>Species</span>
+        <span>Location</span>
         <span>Image</span>
     </div>
       <ul id="leaderboard-list">
@@ -33,6 +35,10 @@
                   <label for="species">Species of Fish:</label>
                   <input type="text" id="species" name="species" required placeholder="Enter species of fish">
               </div>
+          <div class="form-group">
+            <label for="location">Location:</label>
+            <input type="text" id="location" name="location" required placeholder="Enter location">
+        </div>
               <div class="form-group">
                   <label for="photo">Choose a photo to upload:</label>
                   <input type="file" id="photo" name="photo" accept="image/*" required>

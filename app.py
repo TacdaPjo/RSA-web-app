@@ -121,6 +121,7 @@ def upload_photo():
     name = request.form['name']
     length = request.form['length']
     species = request.form['species']
+    location = request.form['location']
     file = request.files['photo']
     
     if file.filename == '':
@@ -134,9 +135,9 @@ def upload_photo():
         conn = sqlite3.connect('images.db')
         c = conn.cursor()
         c.execute('''
-            INSERT INTO leaderboard (name, length, species, photo_url)
-            VALUES (?, ?, ?, ?)
-        ''', (name, length, species, photo_url))
+            INSERT INTO leaderboard (name, length, species, location, photo_url)
+            VALUES (?, ?, ?, ?, ?)
+        ''', (name, length, species, location, photo_url))
         conn.commit()
         conn.close()
 
@@ -150,9 +151,9 @@ def get_leaderboard():
     conn = sqlite3.connect('images.db')
     c = conn.cursor()
     c.execute('''
-        SELECT name, length, species, photo_url
+        SELECT name, length, species, location, photo_url
         FROM leaderboard
-        ORDER BY length ASC
+        ORDER BY CAST(length AS INTEGER) DESC
         LIMIT 5
     ''')
     records = c.fetchall()
@@ -164,10 +165,29 @@ def get_leaderboard():
             'name': record[0],
             'length': record[1],
             'species': record[2],
-            'photo_url': record[3]
+            'location': record[3],
+            'photo_url': record[4]
         } for record in records
     ]
 
     return jsonify(leaderboard_entries)
+
+@app.route('/map')
+def map():
+    # Fetch all unique locations from the database
+    conn = sqlite3.connect('images.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT location FROM leaderboard')
+    locations = cursor.fetchall()
+    conn.close()
+
+    # Convert to a format suitable for JSON
+    location_data = [loc[0] for loc in locations if loc[0]]  # Remove any empty locations
+
+    return render_template('map.html', location_data=location_data)
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+

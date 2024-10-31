@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<title>{% block title %}Find your inspiration | Fishing Location{% endblock %}</title>
+
+<head>
+    <meta charset="UTF-8">
+    <div class="centered-text-container">Fishing Locations</div>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        #map {
+            width: 80%;
+            height: 60vh;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize map centered on Sweden
+        const map = L.map('map').setView([60.1282, 18.6435], 5);
+
+        // Add a basic map layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 18,
+        }).addTo(map);
+
+        // Fetch location data passed from the backend
+        const locations = JSON.parse(`{{ location_data | tojson | safe }}`);
+
+        // Add pins for each location
+        locations.forEach(location => {
+            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${location}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.length > 0) {
+                        const lat = data[0].lat;
+                        const lon = data[0].lon;
+                        L.marker([lat, lon]).addTo(map).bindPopup(location);
+                    }
+                })
+                .catch(error => console.error('Error fetching location data:', error));
+        });
+    </script>
+
+    <!-- Optional JS file -->
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+
+{% endblock %}

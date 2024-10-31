@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Find your inspiration | Catch Your Next Adventure{% endblock %}
+<title>{% block title %}Find your inspiration | Catch Your Next Adventure{% endblock %}</title>
 
 {% block content %}
 <!--
@@ -22,14 +22,11 @@
 </div>-->
 <div class="centered-text-container">Find your inspiration</div>
 <div class="centered-subtext">Catch Your Next Adventure</div>
-<div class="centered-subtext2">Explore the best fishing spots and gear</div>
+<div class="centered-subtext2">Explore the best fishing spots in Sweden</div>
     <video autoplay loop muted playsinline class="hero-video">
         <source src="{{ url_for('static', filename='images/video.mp4') }}" type="video/mp4">
         Your browser does not support the video tag.
     </video>
-    <div class="hero-content">
-        <a href="#get-started" class="cta-button">Get Started</a>
-    </div>
 
 
 <div id="popupModal" class="modal">

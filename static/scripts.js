@@ -81,45 +81,46 @@ dots.forEach(dot => {
     });
 });
 
-// Add event listeners for navigation buttons
 nextBtn.addEventListener('click', nextSlide);
 prevBtn.addEventListener('click', prevSlide);
 
-// Stop auto-slide when the mouse enters the slider container
 sliderContainer.addEventListener('mouseover', stopAutoSlide);
 
-// Restart auto-slide when the mouse leaves the slider container
 sliderContainer.addEventListener('mouseout', startAutoSlide);
 
-// Start auto-slide when the page loads
 startAutoSlide();
-updateDots(); // Initialize the dots
+updateDots(); 
 }
 document.addEventListener("DOMContentLoaded", function() {
-    // Load the initial leaderboard data when the page loads
     fetchLeaderboard();
 
-    // Handle form submission for uploading a new entry
     document.getElementById('uploadForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent default form submission
 
-        const formData = new FormData(this); // Capture the form data
+        const formData = new FormData(this);
         fetch('/upload_photo', {
             method: 'POST',
             body: formData
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                console.log('Response status: ', response.status);
+                // Log the status and return JSON if possible to read error
+                response.text().then(text => console.error('Response body:', text));
+                throw new Error(`Network response was not ok. Status: ${response.status}`);
+            }
+            return response.json(); // Expect JSON response
+        })
         .then(data => {
             if (data.photo_url) {
-                // Add the new entry to the leaderboard without reloading the page
                 addEntryToLeaderboard({
                     name: formData.get('name'),
                     length: formData.get('length'),
                     species: formData.get('species'),
+                    location: formData.get('location'),
                     photo_url: data.photo_url
                 });
 
-                // Optional: Clear the form fields after successful upload
                 document.getElementById('uploadForm').reset();
             } else {
                 alert(data.error || 'Failed to upload photo');
@@ -129,7 +130,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
-// Function to fetch and render the leaderboard from the server
 function fetchLeaderboard() {
     fetch('/leaderboard')
         .then(response => response.json())
@@ -159,6 +159,9 @@ function addEntryToLeaderboard(entry) {
     const species = document.createElement('p');
     species.textContent = `${entry.species}`;
 
+    const location = document.createElement('p');
+    species.textContent = `${entry.location}`;
+
     const img = document.createElement('img');
     img.src = entry.photo_url;
     img.alt = `${entry.species}`;
@@ -170,25 +173,23 @@ function addEntryToLeaderboard(entry) {
     listItem.appendChild(name);
     listItem.appendChild(length);
     listItem.appendChild(species);
+    listItem.appendChild(location);
     listItem.appendChild(img);
 
     leaderboardList.appendChild(listItem);
 }
 
-// Function to open the modal and display the clicked image
 function openModal(imageUrl) {
     const modal = document.getElementById("imageModal");
     const modalImg = document.getElementById("enlargedImage");
-    modal.style.display = "flex"; // Show the modal
+    modal.style.display = "flex"; 
     modalImg.src = imageUrl;
 }
 
-// Function to close the modal
 function closeModal(event) {
     const modal = document.getElementById("imageModal");
     const modalImageContainer = document.querySelector(".modal-image-container");
 
-    // Only close the modal if the click is outside the image container
     if (event.target === modal || event.target === modal.querySelector(".close-button")) {
         modal.style.display = "none";
     }

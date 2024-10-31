@@ -10,6 +10,7 @@ def initialize_db():
             name TEXT NOT NULL,
             length TEXT NOT NULL,
             species TEXT NOT NULL,
+            location TEXT NOT NULL,
             photo_url TEXT NOT NULL
         )
     ''')
