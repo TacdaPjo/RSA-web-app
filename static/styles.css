@@ -11,7 +11,8 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background: linear-gradient(to right, #1c1c1c 50%, #d1bb91 50%);
+    background: linear-gradient(to right, #1c1c1c 50%, #4A5A4E 50%);
+    /*Biege #d1bb91 */
     overflow: hidden;
     position: relative;
     flex-direction: column;
@@ -26,7 +27,7 @@ body {
     font-size: 6em;
     font-weight: bold;
     color: #ffffff;
-    background: linear-gradient(to right, #d1bb91 50%, #1c1c1c 50%);
+    background: linear-gradient(to right, #556B2F 50%, #1c1c1c 50%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -55,7 +56,7 @@ body {
     font-size: 1em;
     font-weight: bold;
     color: #ffffff;
-    background: linear-gradient(to right, #d1bb91 50%, #1c1c1c 50%);
+    background: linear-gradient(to right, #556B2F 50%, #1c1c1c 50%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -477,7 +478,7 @@ body {
     display: flex;
     max-width: 1200px;
     margin: 20px;
-    background-color: #b0935d;
+    background-color: #3d4940;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
@@ -502,7 +503,7 @@ body {
 .text-section p {
     font-size: 1em;
     line-height: 1.6;
-    color: #333;
+    color: #000000;
     margin-bottom: 20px;
 }
 
