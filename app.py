@@ -50,17 +50,6 @@ def encrypt_result():
     ciphertext = encrypt_message(message, public_key)
     return render_template('encrypt_result.html', message=message, ciphertext=ciphertext)
 
-@app.route('/decrypt_result', methods=['POST'])
-def decrypt_result():
-    if private_key is None:
-        flash("Please generate RSA keys first.", "danger")
-        return redirect(url_for('index'))
-
-    encrypted_message = request.form['encrypted_message']
-    encrypted_message = list(map(int, encrypted_message.strip('[]').split(',')))
-    decrypted_message = decrypt_message(encrypted_message, private_key)
-    return render_template('decrypt_result.html', encrypted_message=encrypted_message, decrypted_message=decrypted_message)
-
 
 #Routes goes here!
 @app.route('/')
@@ -79,6 +68,10 @@ def decryption():
 @app.route('/about_me')
 def about_me():
     return render_template('about_me.html', public_key=public_key, private_key=private_key)
+
+@app.route('/test')
+def test():
+    return render_template('test.html', public_key=public_key, private_key=private_key)
 
 @app.route('/')
 def home():

@@ -475,14 +475,15 @@ body {
 
 .about-container {
     display: flex;
-    max-width: 1200px;
-    margin: 20px;
+    max-width: 800px;
+    margin-top: 5%;
     background-color: #b0935d;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
     overflow: hidden;
     border: 1px solid #333;
     align-items: stretch; /* Allow sections to expand based on content */
+    
 }
 
 .text-section {
@@ -523,7 +524,8 @@ body {
 
 .image-section {
     flex: 1;
-    max-width: 550px;
+    margin-top: 5%;
+    max-width: 50%;
     background-size: cover;
     background-position: center;
     display: flex;
@@ -540,3 +542,4 @@ body {
     margin-bottom: 20px;
     transform: translateX(-20px); /* Offset the image 20px to the left */
 }
+
