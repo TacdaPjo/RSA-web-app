@@ -195,6 +195,7 @@ body {
 }
 
 .slider-container {
+    margin-top: 5%;
     position: relative; 
     width: 100%; 
     max-width: 800px; 
@@ -510,7 +511,7 @@ body {
 .contact-button {
     background-color: #333;
     color: #fff;
-    padding: 10px 20px;
+    padding: 20px 30px;
     text-decoration: none;
     font-weight: bold;
     border-radius: 5px;
@@ -543,3 +544,30 @@ body {
     transform: translateX(-20px); /* Offset the image 20px to the left */
 }
 
+.logo {
+    position: absolute;
+    top: 20px;         /* Adjust spacing from the top */
+    right: 20px;       /* Adjust spacing from the right */
+    width: 100px;       /* Set width as needed */
+    height: auto;      /* Maintain aspect ratio */
+    
+    animation: fillUp 8s forwards, fadeIn 8s forwards;
+}
+
+@keyframes fillUp {
+    0% {
+        fill: transparent;
+    }
+    100% {
+        fill: #000000; 
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
