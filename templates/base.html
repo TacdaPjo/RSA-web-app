@@ -19,9 +19,10 @@
             <a href="{{ url_for('decryption') }}">Leaderboard</a>
             <a href="{{ url_for('map')}}">Pins for map</a>
             <a href="{{ url_for('about_me') }}">About Me</a>
-            <a href="{{ url_for('test') }}">Test</a>
         </div> 
     </div>
+    <img src="{{ url_for('static', filename='images/fishSVGflipped.svg') }}" class="logo" alt="Logo">
+
     <!-- Main content block for child templates -->
     {% block content %}{% endblock %}
 
